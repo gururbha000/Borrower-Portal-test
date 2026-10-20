@@ -4439,22 +4439,46 @@ html body #staffWrap>.staffQueue,html body #staffWrap #staffQueue{display:none!i
 html body #staffWrap>.requestOnlyChrome,html body #staffWrap>.staffGrid{display:block!important}
 html body #staffWrap>#ownershipStaffWorkspace{display:none!important}
 </style>
-<script id="v146-reserve-detail-init">
-(function(){function apply(){
- document.documentElement.setAttribute('data-v96-route','staff');
- const wrap=document.getElementById('staffWrap');if(!wrap)return;
- wrap.classList.remove('queueMode','ow-mode');document.getElementById('staffView')?.classList.remove('queue-mode');
- const queue=document.getElementById('staffQueue');if(queue)queue.style.setProperty('display','none','important');
- const id=new URLSearchParams(location.search).get('requestId')||'001250301';
- const banner=wrap.querySelector('.staffBanner');
- if(banner){const values=banner.querySelectorAll(':scope>div strong');if(values[0])values[0].textContent=id;
-  let notice=document.getElementById('v146SampleWarning');
-  if(id!=='001250301'){
-   if(!notice){notice=document.createElement('div');notice.id='v146SampleWarning';notice.style.cssText='padding:12px 18px;background:#fff4d8;border:1px solid #d5b766;color:#5b430c;margin:12px 28px;border-radius:7px;font:14px Arial';banner.after(notice);}
-   notice.textContent='Demo limitation: the detailed reserve review data below belongs to sample request 001250301, not '+id+'. Request-specific details have not yet been implemented.';
-  }else notice?.remove();
+<script id="v147-reserve-request-detail">
+(function(){
+ const sampleId='001250301';
+ function apply(){
+  const wrap=document.getElementById('staffWrap');if(!wrap)return;
+  document.documentElement.setAttribute('data-v96-route','staff');
+  wrap.classList.remove('queueMode','ow-mode');
+  document.getElementById('staffView')?.classList.remove('queue-mode');
+  document.getElementById('staffQueue')?.style.setProperty('display','none','important');
+  const id=new URLSearchParams(location.search).get('requestId')||sampleId;
+  const rows=[...document.querySelectorAll('#reserveQueue tbody tr')];
+  const row=rows.find(r=>r.querySelector('td')?.textContent.trim()===id);
+  const banner=wrap.querySelector('.staffBanner');if(!banner)return;
+  const vals=banner.querySelectorAll(':scope > div strong');
+  if(vals[0])vals[0].textContent=id;
+  const extra=document.getElementById('v147RequestSummary');extra?.remove();
+  const old=document.getElementById('v146SampleWarning');old?.remove();
+  const detailParts=[...wrap.children].filter(x=>x.classList.contains('staffTools')||x.classList.contains('staffGrid')||x.id==='staffDocWorkspace'||x.id==='staffActivityLogWorkspace'||x.id==='approvalLetterPanel'||x.id==='pendingSupervisorBanner');
+  if(id===sampleId){detailParts.forEach(x=>x.style.removeProperty('display'));return;}
+  detailParts.forEach(x=>x.style.setProperty('display','none','important'));
+  const cells=row?[...row.cells].map(c=>c.textContent.trim().replace(/\s+/g,' ')):[];
+  const project=cells[2]||'Not available';const loan=cells[3]||'Not available';
+  const type=cells[4]||'Not available';const amount=cells[5]||'Not available';
+  const requester=cells[6]||'Not available';const email=cells[7]||'Not available';
+  const comments=cells[8]||'Not available';const status=cells[9]||'Not available';
+  if(vals[2])vals[2].textContent=project;if(vals[3])vals[3].textContent=loan;
+  const st=banner.querySelector('.reviewStatus');if(st)st.textContent='● '+status;
+  const section=document.createElement('section');section.id='v147RequestSummary';
+  section.style.cssText='background:white;border:1px solid #cdd9e6;border-radius:9px;margin:20px 28px;padding:24px;font:14px Arial;color:#172f50';
+  const heading=document.createElement('h2');heading.textContent='Reserve Withdrawal — '+id;heading.style.margin='0 0 14px';section.appendChild(heading);
+  const note=document.createElement('p');note.textContent='Request-specific information available in the Staff Dashboard sample queue is shown below. Invoice, document and review-step details for this request have not been supplied; no unrelated request data is displayed.';
+  note.style.cssText='padding:12px;background:#fff4d8;border:1px solid #d8bd77;border-radius:6px';section.appendChild(note);
+  const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px';
+  [['Request ID',id],['Submitted On',cells[1]||'Not available'],['Project / Property',project],['Loan #',loan],['Reserve Type',type],['Withdrawal Amount',amount],['Submitted By',requester],['Email',email],['Status',status],['Assigned Staff',cells[10]||'Not assigned'],['Staff Comments',comments]].forEach(([label,value])=>{
+    const el=document.createElement('div');el.style.cssText='border:1px solid #e0e7ef;border-radius:6px;padding:12px';
+    const small=document.createElement('div');small.textContent=label;small.style.cssText='font-size:12px;color:#58708c;margin-bottom:7px';
+    const strong=document.createElement('strong');strong.textContent=value;el.append(small,strong);grid.appendChild(el);
+  });section.appendChild(grid);banner.after(section);
  }
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();window.addEventListener('pageshow',apply);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+ window.addEventListener('pageshow',apply);
 })();
 </script></body></html>
