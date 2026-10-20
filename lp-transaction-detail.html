@@ -4377,4 +4377,23 @@ window.v120OpenSubmittedRequest=function(d){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);
  else start();
 })();
+</script><style id="v146-lp-detail-isolation">
+html body #staffWrap>.staffQueue,html body #staffWrap #staffQueue{display:none!important}
+html body #staffWrap>#ownershipStaffWorkspace{display:block!important}
+html body #staffWrap>.requestOnlyChrome,html body #staffWrap>.staffGrid{display:none!important}
+</style>
+<script id="v146-lp-detail-init">
+(function(){function apply(){
+ document.documentElement.setAttribute('data-v96-route','staff');
+ const wrap=document.getElementById('staffWrap');if(!wrap)return;
+ wrap.classList.remove('queueMode');wrap.classList.add('ow-mode');
+ document.getElementById('staffView')?.classList.remove('queue-mode');
+ const queue=document.getElementById('staffQueue');if(queue)queue.style.setProperty('display','none','important');
+ const own=document.getElementById('ownershipStaffWorkspace');if(own)own.style.setProperty('display','block','important');
+ const id=new URLSearchParams(location.search).get('requestId');
+ if(id){const label=own?.querySelector('.ow-summary strong');if(label)label.textContent=id;}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
+ window.addEventListener('pageshow',apply);
+})();
 </script></body></html>

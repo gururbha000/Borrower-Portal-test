@@ -4434,4 +4434,27 @@ window.v120OpenSubmittedRequest=function(d){
  window.addEventListener('click',back,true);
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
  window.addEventListener('pageshow',init);
-})();</script></body></html>
+})();</script><style id="v146-reserve-detail-isolation">
+html body #staffWrap>.staffQueue,html body #staffWrap #staffQueue{display:none!important}
+html body #staffWrap>.requestOnlyChrome,html body #staffWrap>.staffGrid{display:block!important}
+html body #staffWrap>#ownershipStaffWorkspace{display:none!important}
+</style>
+<script id="v146-reserve-detail-init">
+(function(){function apply(){
+ document.documentElement.setAttribute('data-v96-route','staff');
+ const wrap=document.getElementById('staffWrap');if(!wrap)return;
+ wrap.classList.remove('queueMode','ow-mode');document.getElementById('staffView')?.classList.remove('queue-mode');
+ const queue=document.getElementById('staffQueue');if(queue)queue.style.setProperty('display','none','important');
+ const id=new URLSearchParams(location.search).get('requestId')||'001250301';
+ const banner=wrap.querySelector('.staffBanner');
+ if(banner){const values=banner.querySelectorAll(':scope>div strong');if(values[0])values[0].textContent=id;
+  let notice=document.getElementById('v146SampleWarning');
+  if(id!=='001250301'){
+   if(!notice){notice=document.createElement('div');notice.id='v146SampleWarning';notice.style.cssText='padding:12px 18px;background:#fff4d8;border:1px solid #d5b766;color:#5b430c;margin:12px 28px;border-radius:7px;font:14px Arial';banner.after(notice);}
+   notice.textContent='Demo limitation: the detailed reserve review data below belongs to sample request 001250301, not '+id+'. Request-specific details have not yet been implemented.';
+  }else notice?.remove();
+ }
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();window.addEventListener('pageshow',apply);
+})();
+</script></body></html>
