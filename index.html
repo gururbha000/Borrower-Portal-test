@@ -4375,4 +4375,26 @@ window.v120OpenSubmittedRequest=function(d){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);
  else start();
 })();
-</script></body></html>
+</script>
+<!-- v156: top-level navigation isolation. Does not change onboarding or internal demo flows. -->
+<script id="v156-landing-nav-guard">
+(function(){
+  const destinations={
+    'Sign In':'index.html',
+    'Borrower Dashboard':'borrower-portal.html',
+    'Staff Dashboard':'staff-dashboard.html',
+    'Transactions':'loan-portfolio-transaction-form.html',
+    'Reserve Withdrawal':'reserve-withdrawal-form.html'
+  };
+  document.addEventListener('click',function(event){
+    const link=event.target.closest('nav.v96-nav a');
+    if(!link)return;
+    const destination=destinations[link.textContent.trim()];
+    if(!destination)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.location.assign(new URL(destination,document.baseURI).href);
+  },true);
+})();
+</script>
+</body></html>
