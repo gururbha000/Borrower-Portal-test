@@ -4372,22 +4372,4 @@ window.v120OpenSubmittedRequest=function(d){
   },true);
 })();
 </script>
-
-<!-- v161: home-page runtime isolation. Legacy dashboard and application DOM is
-     retained in source temporarily because old scripts initialize against it.
-     Remove those inactive views only after the page has loaded; all application
-     entry points are the separate standalone HTML files. -->
-<script id="v161-home-runtime-isolation">
-(function(){
-  function isolateHome(){
-    if(document.documentElement.getAttribute('data-v96-route')!=='home')return;
-    for(const id of ['portalShell','integratedRequestView']){
-      const el=document.getElementById(id);
-      if(el)el.remove();
-    }
-  }
-  if(document.readyState==='complete')isolateHome();
-  else window.addEventListener('load',isolateHome,{once:true});
-})();
-</script>
 </body></html>
