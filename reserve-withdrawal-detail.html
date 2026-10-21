@@ -1617,13 +1617,14 @@ html body #staffWrap > .staffGrid > .reviewMain {min-width:0 !important;}
  html body #staffWrap > .staffBanner.requestOnlyChrome{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
  html body #staffWrap > .staffGrid{grid-template-columns:1fr !important}
 }
-</style>
-<!-- v153: Keep all invoice/bid review columns accessible without clipping. -->
-<style id="v153-invoice-horizontal-scroll">
-#p4 .reviewTableWrap { overflow-x: auto !important; overflow-y: hidden; max-width: 100%; -webkit-overflow-scrolling: touch; }
-#p4 .staffInvoiceReviewTable { min-width: 1580px; width: max-content; }
-#p4 .staffInvoiceReviewTable th:last-child,
-#p4 .staffInvoiceReviewTable td:last-child { min-width: 245px; }
+</style><style id="v154-invoice-scroll-only">
+/* Preserve v152 two-column staff layout; limit horizontal scrolling to Step 4. */
+html body #staffWrap > .staffGrid { display:grid !important; grid-template-columns:260px minmax(0,1fr) !important; gap:20px !important; align-items:start !important; }
+html body #staffWrap > .staffGrid > .reviewMain { min-width:0 !important; }
+@media(max-width:750px){html body #staffWrap > .staffGrid {grid-template-columns:1fr !important;}}
+#staffWrap #p4 .reviewTableWrap { overflow-x:auto !important; overflow-y:hidden; max-width:100%; -webkit-overflow-scrolling:touch; }
+#staffWrap #p4 #staffInvoiceReviewTable { min-width:1320px; }
+#staffWrap #p4 #staffInvoiceReviewTable .commentsHead { min-width:245px; }
 </style>
 </head>
 <body><script id="v145-detail-navigation">(function(){
@@ -4517,4 +4518,4 @@ html body #staffWrap>#ownershipStaffWorkspace{display:none!important}
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
-</script></body></html>
+</script><style id="v154-final-grid-guard">html body #staffWrap > .staffGrid{display:grid!important;grid-template-columns:260px minmax(0,1fr)!important;gap:20px!important;align-items:start!important}html body #staffWrap > .staffGrid > .reviewMain{min-width:0!important}@media(max-width:750px){html body #staffWrap > .staffGrid{grid-template-columns:1fr!important}}</style></body></html>
