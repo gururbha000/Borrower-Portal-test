@@ -4031,7 +4031,8 @@ if(route==='staff'){
 <script id="v105-dashboard-role-entry">
 /* Select the requested dashboard role after navigation from registration. */
 (function(){
-  const role=new URLSearchParams(window.location.search).get('role');
+  const role=sessionStorage.getItem('lahdDemoEntryRole');
+  sessionStorage.removeItem('lahdDemoEntryRole');
   if(!['tier1','tier2','basic'].includes(role))return;
   function applyRole(){
     const button=document.getElementById(role==='tier2'?'tier2Btn':role==='basic'?'basicUserDemo':'tier1Btn');

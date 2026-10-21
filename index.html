@@ -1799,7 +1799,7 @@ function addHelp(tier){
  d.querySelector('.helpToggle').onclick=()=>{d.classList.toggle('collapsed');d.querySelector('.helpToggle').textContent=d.classList.contains('collapsed')?'Show':'Hide';};
  d.querySelector('.helpClose').onclick=()=>d.remove();
 }
-function openDashboard(tier,firstTime){window.location.assign('borrower-portal.html?role='+encodeURIComponent(tier==='tier2'?'tier2':'tier1'));}
+function openDashboard(tier,firstTime){sessionStorage.setItem('lahdDemoEntryRole',tier==='tier2'?'tier2':'tier1');window.location.assign('borrower-portal.html');}
 </script>
 <script>
 const tabs=[...document.querySelectorAll('.tab')],views=[...document.querySelectorAll('.view')];
@@ -4002,10 +4002,10 @@ function goToRelatedRequests(){
 })();
 </script><script id="v86-basic-first-time-demo">
 function startBasicFirstTime(){showOb('basicprofile');}
-function openBasicDashboardFirstTime(){window.location.assign('borrower-portal.html?role=basic');}
+function openBasicDashboardFirstTime(){sessionStorage.setItem('lahdDemoEntryRole','basic');window.location.assign('borrower-portal.html');}
 </script>
 <script id="v93-returning-user-script">
-function returningUserLogin(){window.location.assign('borrower-portal.html?role=tier1');}
+function returningUserLogin(){sessionStorage.setItem('lahdDemoEntryRole','tier1');window.location.assign('borrower-portal.html');}
 </script>
 <script id="v96-route-start">
 (function(){
