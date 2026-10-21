@@ -1799,7 +1799,7 @@ function addHelp(tier){
  d.querySelector('.helpToggle').onclick=()=>{d.classList.toggle('collapsed');d.querySelector('.helpToggle').textContent=d.classList.contains('collapsed')?'Show':'Hide';};
  d.querySelector('.helpClose').onclick=()=>d.remove();
 }
-function openDashboard(tier,firstTime){document.getElementById('onboarding').classList.remove('active');document.getElementById('portalShell').classList.remove('hidden-for-onboard');setTimeout(()=>{const b=document.getElementById(tier==='tier2'?'tier2Btn':'tier1Btn');if(b)b.click();if(firstTime)addHelp(tier);},0);}
+function openDashboard(tier,firstTime){window.location.assign('borrower-portal.html?role='+encodeURIComponent(tier==='tier2'?'tier2':'tier1'));}
 </script>
 <script>
 const tabs=[...document.querySelectorAll('.tab')],views=[...document.querySelectorAll('.view')];
@@ -4002,35 +4002,10 @@ function goToRelatedRequests(){
 })();
 </script><script id="v86-basic-first-time-demo">
 function startBasicFirstTime(){showOb('basicprofile');}
-function openBasicDashboardFirstTime(){
-  const onboarding=document.getElementById('onboarding');
-  const shell=document.getElementById('portalShell');
-
-  if(onboarding) onboarding.classList.remove('active');
-
-  // portalShell is hidden by .hidden-for-onboard {display:none!important}.
-  // Remove that exact baseline class, matching the working Tier 1/Tier 2 transition.
-  if(shell) shell.classList.remove('hidden-for-onboard');
-
-  // Initialize the already-established Basic User dashboard/view.
-  setTimeout(function(){
-    const basicBtn=document.getElementById('basicUserDemo');
-    if(basicBtn) basicBtn.click();
-    window.scrollTo(0,0);
-  },0);
-}
+function openBasicDashboardFirstTime(){window.location.assign('borrower-portal.html?role=basic');}
 </script>
 <script id="v93-returning-user-script">
-function returningUserLogin(){
-  const onboarding=document.getElementById('onboarding');
-  const shell=document.getElementById('portalShell');
-  if(onboarding) onboarding.classList.remove('active');
-  if(shell) shell.classList.remove('hidden-for-onboard');
-  // Demo defaults to the established Primary User dashboard for a returning user.
-  const tier1=document.getElementById('tier1Btn');
-  if(tier1) tier1.click();
-  window.scrollTo(0,0);
-}
+function returningUserLogin(){window.location.assign('borrower-portal.html?role=tier1');}
 </script>
 <script id="v96-route-start">
 (function(){
