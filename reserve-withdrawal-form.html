@@ -1490,7 +1490,7 @@ html[data-v96-route="reserve"] .demoSwitch {display:none!important}
 .v96-nav{position:relative;z-index:9999;background:#173a60;padding:11px 16px;display:flex;gap:17px;flex-wrap:wrap;font:12px Arial}
 .v96-nav a{color:white;text-decoration:none}.v96-nav a:hover{text-decoration:underline}
 </style></head>
-<body><nav class="v96-nav"><a href="index.html">Sign In</a><a href="borrower-portal.html">Borrower Dashboard</a><a href="staff-dashboard.html">Staff Dashboard</a><a href="loan-portfolio-transaction-form.html">Transactions</a><a href="reserve-withdrawal-form.html">Reserve Withdrawal</a></nav>
+<body><nav class="v96-nav"><a href="index.html">Sign In</a><a href="borrower-portal.html">Borrower Dashboard</a><a href="staff-dashboard.html">Staff Dashboard</a><a href="loan-portfolio-transaction-form.html">LP Transaction Form</a><a href="reserve-withdrawal-form.html">Reserve Withdrawal Form</a></nav>
 <div class="onboard-shell active" id="onboarding">
 <header class="top"><div class="brand"><div class="logo"></div><div><h1>Borrower Portal</h1><p>Los Angeles Housing Department</p></div></div><div class="profile"><div><b>Riverview Housing LLC</b><span id="profileRole">Maria Hernandez · Primary User</span></div><div class="avatar" id="avatar">MH</div></div></header>
 <div class="citybar">◉ An Official Website of the City of Los Angeles</div>
@@ -1505,19 +1505,19 @@ html[data-v96-route="reserve"] .demoSwitch {display:none!important}
 <div class="onboard-wrap">
 <section class="obpage" id="portalEntry" style="display:none"><div class="ob-card"><h1>LAHD Borrower Portal</h1><div class="info-callout"><b>Angeleno Account Required</b><br/>LAHD services use the City of Los Angeles unified authentication system. Actual Angeleno sign-in/account creation is outside this mock-up.</div><h2>Continue to Borrower Portal</h2><p>After Angeleno authentication, the portal determines whether you are a primary user or an affiliated user based on LAHD records.</p><div class="flow-choice"><button class="ob-btn primary" onclick="startFlow('tier1')">Demo: Sign in as Tier 1</button><button class="ob-btn" onclick="startFlow('tier2')">Demo: Sign in as Tier 2</button><button class="ob-btn" onclick="startBasicFirstTime()">Demo: Sign in as Basic User</button></div>
 <div class="v93-returning-wrap">
-  <div class="v93-or"><span>OR</span></div>
-  <button type="button" class="v93-returning-btn" onclick="returningUserLogin()">Returning User — Go to Dashboard</button>
-  <div class="v93-returning-help">For users who have already completed first-time portal setup.</div>
+<div class="v93-or"><span>OR</span></div>
+<button class="v93-returning-btn" onclick="returningUserLogin()" type="button">Returning User — Go to Dashboard</button>
+<div class="v93-returning-help">For users who have already completed first-time portal setup.</div>
 </div></div></section>
 <div class="stepper" id="steps" style="display:none"><div class="stepnode">Angeleno Sign-In</div><div class="stepnode">Basic Profile</div><div class="stepnode">Verify Access</div><div class="stepnode">Dashboard</div></div>
 <section class="obpage" id="basicprofile" style="display:none"><div class="ob-card">
 <span class="rolebadge">BASIC USER</span><h1 style="margin-top:12px">Complete Your Basic Profile</h1>
 <p>Enter your basic contact information to continue to the Borrower Portal.</p>
-<div class="ob-grid"><div class="ob-field"><label>Full Name</label><input value="John Doe"></div>
-<div class="ob-field"><label>Email</label><input readonly value="john.doe@yopmail.com"></div>
-<div class="ob-field"><label>Phone</label><input placeholder="(213) 555-0000"></div>
-<div class="ob-field"><label>Title / Role</label><input placeholder="Enter title or role"></div>
-<div class="ob-field"><label>Organization / Company</label><input placeholder="Enter organization or company"></div></div>
+<div class="ob-grid"><div class="ob-field"><label>Full Name</label><input value="John Doe"/></div>
+<div class="ob-field"><label>Email</label><input readonly="" value="john.doe@yopmail.com"/></div>
+<div class="ob-field"><label>Phone</label><input placeholder="(213) 555-0000"/></div>
+<div class="ob-field"><label>Title / Role</label><input placeholder="Enter title or role"/></div>
+<div class="ob-field"><label>Organization / Company</label><input placeholder="Enter organization or company"/></div></div>
 <div class="ob-actions"><button class="ob-btn primary" onclick="openBasicDashboardFirstTime()">Continue</button></div>
 </div></section>
 <section class="obpage" id="t1profile" style="display:none"><div class="ob-card"><span class="rolebadge">TIER 1 · PRIMARY USER</span><h1 style="margin-top:12px">Complete Your Basic Profile</h1><p>Your Angeleno account matches a primary/notice contact in LAHD records.</p><div class="ob-grid"><div class="ob-field"><label>Full Name</label><input value="Maria Hernandez"/></div><div class="ob-field"><label>Email</label><input readonly="" value="maria@riverviewhousing.com"/></div><div class="ob-field"><label>Phone</label><input placeholder="(213) 555-0000"/></div><div class="ob-field"><label>Title / Role</label><input value="Executive Director"/></div><div class="ob-field"><label>Organization / Company</label><input value="Riverview Housing LLC"/></div></div><div class="ob-actions"><button class="ob-btn primary" onclick="showOb('t1verify')">Continue</button></div></div></section>
@@ -1833,7 +1833,7 @@ document.querySelectorAll('.req-link').forEach(function(btn){
 </script>
 <div id="integratedRequestView" style="display:none;min-height:100vh;background:#f5f7fa"><div class="page" id="borrowerView">
 <div class="topbar">
-<button class="btn btn-primary" type="button">← Back to Dashboard</button>
+<button class="btn btn-primary" onclick="window.location.assign('borrower-portal.html');return false;" type="button">← Back to Dashboard</button>
 </div>
 <div class="panel">
 <span class="request-category-label">What would you like to submit?</span>
@@ -3897,7 +3897,6 @@ function openBasicDashboardFirstTime(){
   },0);
 }
 </script>
-
 <script id="v93-returning-user-script">
 function returningUserLogin(){
   const onboarding=document.getElementById('onboarding');
@@ -3930,4 +3929,20 @@ if(route==='staff'){
  if(input){input.checked=true;input.dispatchEvent(new Event('change',{bubbles:true}));}
 }
 })();
-</script></body></html>
+</script><script id="v157-cross-form-navigation">(function(){
+  var destination = {'category': 'transaction', 'url': 'loan-portfolio-transaction-form.html'};
+  document.querySelectorAll('input[name="requestCategory"]').forEach(function(radio){
+    radio.addEventListener('click', function(event){
+      if (radio.value === destination.category) {
+        event.preventDefault(); event.stopImmediatePropagation();
+        window.location.assign(destination.url);
+      }
+    }, true);
+    radio.addEventListener('change', function(event){
+      if (radio.value === destination.category) {
+        event.stopImmediatePropagation();
+        window.location.assign(destination.url);
+      }
+    }, true);
+  });
+})();</script></body></html>
