@@ -1617,7 +1617,15 @@ html body #staffWrap > .staffGrid > .reviewMain {min-width:0 !important;}
  html body #staffWrap > .staffBanner.requestOnlyChrome{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
  html body #staffWrap > .staffGrid{grid-template-columns:1fr !important}
 }
-</style></head>
+</style>
+<!-- v153: Keep all invoice/bid review columns accessible without clipping. -->
+<style id="v153-invoice-horizontal-scroll">
+#p4 .reviewTableWrap { overflow-x: auto !important; overflow-y: hidden; max-width: 100%; -webkit-overflow-scrolling: touch; }
+#p4 .staffInvoiceReviewTable { min-width: 1580px; width: max-content; }
+#p4 .staffInvoiceReviewTable th:last-child,
+#p4 .staffInvoiceReviewTable td:last-child { min-width: 245px; }
+</style>
+</head>
 <body><script id="v145-detail-navigation">(function(){
    window.addEventListener('click',function(e){
      const back=e.target.closest?.('#owBack,.staffBanner strong');
@@ -4436,8 +4444,7 @@ window.v120OpenSubmittedRequest=function(d){
  window.addEventListener('pageshow',init);
 })();</script><style id="v146-reserve-detail-isolation">
 html body #staffWrap>.staffQueue,html body #staffWrap #staffQueue{display:none!important}
-html body #staffWrap>.staffGrid{display:grid!important;grid-template-columns:260px minmax(0,1fr)!important;gap:20px!important;align-items:start!important}
-@media(max-width:750px){html body #staffWrap>.staffGrid{grid-template-columns:1fr!important}}
+html body #staffWrap>.requestOnlyChrome,html body #staffWrap>.staffGrid{display:block!important}
 html body #staffWrap>#ownershipStaffWorkspace{display:none!important}
 </style>
 <script id="v152-original-staff-workspace">
