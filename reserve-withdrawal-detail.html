@@ -4439,12 +4439,12 @@ html body #staffWrap>.staffQueue,html body #staffWrap #staffQueue{display:none!i
 html body #staffWrap>.requestOnlyChrome,html body #staffWrap>.staffGrid{display:block!important}
 html body #staffWrap>#ownershipStaffWorkspace{display:none!important}
 </style>
-<script id="v148-reserve-workspace-request-data">
+<script id="v149-full-reserve-staff-workflow">
 (function(){
  const sampleId='001250301';
- const esc=(v)=>String(v??'Not available').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const clean=v=>String(v||'Not supplied');
  function apply(){
-  const wrap=document.getElementById('staffWrap');if(!wrap)return;
+  const wrap=document.getElementById('staffWrap'); if(!wrap)return;
   document.documentElement.setAttribute('data-v96-route','staff');
   wrap.classList.remove('queueMode','ow-mode');
   document.getElementById('staffView')?.classList.remove('queue-mode');
@@ -4455,31 +4455,73 @@ html body #staffWrap>#ownershipStaffWorkspace{display:none!important}
   const banner=wrap.querySelector('.staffBanner');if(!banner)return;
   const vals=banner.querySelectorAll(':scope > div strong');
   if(vals[0])vals[0].textContent=id;
-  if(vals[2])vals[2].textContent=cells[2]||'Not available';
-  if(vals[3])vals[3].textContent=cells[3]||'Not available';
-  const status=banner.querySelector('.reviewStatus');if(status)status.textContent='● '+(cells[9]||'Not available');
-  document.getElementById('v147RequestSummary')?.remove();
-  document.getElementById('v146SampleWarning')?.remove();
-  document.getElementById('v148Notice')?.remove();
-  if(id===sampleId)return; // Original complete staff workspace and demo data remain untouched.
-  // Keep the original staff workspace, navigation, tabs and review-step containers visible.
-  const section=document.createElement('div');section.id='v148Notice';section.setAttribute('role','status');
-  section.style.cssText='margin:14px 28px;padding:12px 16px;background:#fff4d8;border:1px solid #d8bd77;border-radius:6px;color:#513a0b;font:14px Arial';
-  section.textContent=row?'Staff review workspace restored. Only request-level sample queue data is available for '+id+'; invoice, document, review history and other request-specific details are not supplied.':'No matching sample queue record exists for '+id+'. Review fields are not available.';
-  banner.after(section);
-  const info=[['Request #',id],['Request Type','Reserve Withdrawal'],['Submitted On',cells[1]],['Project / Property',cells[2]],['Loan #',cells[3]],['Reserve Type',cells[4]],['Requested Amount',cells[5]],['Submitted By',cells[6]],['Email',cells[7]],['Staff Comments',cells[8]],['Status',cells[9]],['Assigned Staff',cells[10]]];
-  const grid=info.map(([k,v])=>'<div style="border:1px solid #d9e3ef;padding:12px;border-radius:6px;background:#fff"><small style="display:block;color:#55718d;margin-bottom:6px">'+esc(k)+'</small><strong>'+esc(v||'Not available')+'</strong></div>').join('');
-  const p1=document.getElementById('p1');if(p1)p1.innerHTML='<h2>Step 1 - Request Information</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">'+grid+'</div>';
-  const p2=document.getElementById('p2');if(p2)p2.innerHTML='<h2>Step 2 - Project / Loan Information</h2><div class="detailCard"><div class="detailGrid"><div><span>Project / Property:</span><strong>'+esc(cells[2])+'</strong></div><div><span>Loan #:</span><strong>'+esc(cells[3])+'</strong></div><div><span>Borrower:</span><strong>Not supplied</strong></div><div><span>Property Address:</span><strong>Not supplied</strong></div></div></div>';
-  [['p3','Step 3 - Reserve Withdrawal','Purpose, reserve account balance, and supporting analysis are not available for this sample request.'],['p4','Step 4 - Invoice / Bid Information','Invoice and bid records have not been supplied for this request.'],['p5','Step 5 - Submitted Documents','Submitted document records have not been supplied for this request.']].forEach(([key,title,msg])=>{const el=document.getElementById(key);if(el)el.innerHTML='<h2>'+title+'</h2><div class="detailCard" style="padding:20px">'+esc(msg)+'</div>';});
-  // Existing document and activity workspaces contain records for 001250301; don't present them as this request's records.
-  for(const key of ['staffDocWorkspace','staffActivityLogWorkspace']){
-   const el=document.getElementById(key);if(!el)continue;
-   el.innerHTML='<div style="padding:24px;background:#fff;border:1px solid #d6e0eb;border-radius:8px;margin:20px"><h2>'+ (key==='staffDocWorkspace'?'Submitted Documents':'Activity Log')+'</h2><p>No request-specific '+(key==='staffDocWorkspace'?'documents':'activity history')+' were supplied for '+esc(id)+'.</p></div>';
+  if(vals[2])vals[2].textContent=clean(cells[2]);
+  if(vals[3])vals[3].textContent=clean(cells[3]);
+  const status=banner.querySelector('.reviewStatus');if(status)status.textContent='● '+clean(cells[9]);
+  ['v147RequestSummary','v146SampleWarning','v148Notice','v149Notice'].forEach(k=>document.getElementById(k)?.remove());
+  // Do not destroy any of the original workflow panels, invoice controls, or supervisor controls.
+  if(id===sampleId)return;
+  const note=document.createElement('div');note.id='v149Notice';note.setAttribute('role','status');
+  note.style.cssText='margin:14px 28px;padding:12px 16px;background:#fff4d8;border:1px solid #d8bd77;border-radius:6px;color:#513a0b;font:14px Arial';
+  note.textContent='Staff workflow available for '+id+'. Request-level fields are populated from the demonstration queue. Invoice/bid, documents, approval history and other information not supplied for this request are left blank. Actions are prototype-only and do not submit to LAHD.';
+  banner.after(note);
+  function detail(panel,label,value){
+   const el=document.getElementById(panel);if(!el)return;
+   const ds=[...el.querySelectorAll('.detailGrid > div')];
+   const item=ds.find(d=>d.querySelector('span')?.textContent.trim().toLowerCase().startsWith(label.toLowerCase()));
+   if(item){const st=item.querySelector('strong');if(st)st.textContent=clean(value);}
   }
-  // Preserve visible action-menu UI, but prevent actions tied to another request's sample data.
-  const menu=wrap.querySelector('.actionMenuWrap');if(menu){menu.title='Sample staff actions are not populated for '+id;}
-  for(const el of wrap.querySelectorAll('#approvalLetterPanel,#pendingSupervisorBanner,#priorRequestsPanel,#relatedRequestInline'))el.style.setProperty('display','none','important');
+  // Preserve all five review panels and their interactive controls.
+  detail('p2','Project / Property',cells[2]);detail('p2','Loan #',cells[3]);
+  detail('p2','Borrower','Not supplied');detail('p2','Property Address','Not supplied');
+  detail('p3','Reserve Fund',cells[4]);detail('p3','Withdrawal Amount',cells[5]);
+  detail('p3','Current Reserve Balance','Not supplied');detail('p3','Balance As-Of','Not supplied');
+  detail('p3','Need-By Date','Not supplied');detail('p3','Description','Not supplied');
+  // Replace sample request overview text without removing its review step structure.
+  const p1=document.getElementById('p1');
+  if(p1){
+   const prior=p1.querySelector('.priorRequestNotice');if(prior)prior.style.display='none';
+   const overview=document.createElement('div');overview.className='detailCard';overview.id='v149RequestOverview';
+   overview.innerHTML='<h3>Selected Request Information</h3><div class="detailGrid three"></div>';
+   const grid=overview.querySelector('.detailGrid');
+   [['Request ID',id],['Submitted On',cells[1]],['Project / Property',cells[2]],['Loan #',cells[3]],['Reserve Type',cells[4]],['Withdrawal Amount',cells[5]],['Submitted By',cells[6]],['Email',cells[7]],['Staff Comments',cells[8]],['Status',cells[9]],['Assigned Staff',cells[10]]].forEach(([label,val])=>{
+    const d=document.createElement('div'),sp=document.createElement('span'),st=document.createElement('strong');sp.textContent=label+':';st.textContent=clean(val);d.append(sp,st);grid.append(d);
+   });
+   p1.insertBefore(overview,p1.firstChild);
+   // The remaining sample-specific narrative must not be presented as the selected request's facts.
+   [...p1.children].forEach(el=>{if(el!==overview && el.id!=='v149RequestOverview')el.style.display='none';});
+  }
+  const docTab=document.getElementById('staffDocumentsTabBtn');if(docTab)docTab.textContent='Documents (0)';
+  const msgButton=[...wrap.querySelectorAll('button')].find(b=>b.textContent.includes('Messages 🔴'));if(msgButton)msgButton.textContent='Messages (not supplied)';
+  // Invoice review remains editable, including Add, Remove, Approved Amount and Comments.
+  const invoiceBody=document.getElementById('staffInvoiceRows');if(invoiceBody)invoiceBody.replaceChildren();
+  const removed=document.getElementById('removedInvoiceRows');if(removed)removed.replaceChildren();
+  const removedBox=document.getElementById('removedInvoiceSection');if(removedBox)removedBox.style.display='none';
+  const totals=document.querySelectorAll('#staffInvoiceReviewTable tfoot strong');
+  if(totals[0])totals[0].textContent=clean(cells[5]);
+  if(totals[1])totals[1].textContent='$0';
+  const bid=document.querySelector('#p4 .applicantBidBlock');if(bid){
+   bid.querySelectorAll('.bidResponse strong').forEach(el=>el.textContent='Not supplied');
+   bid.querySelectorAll('.bidResponse small').forEach(el=>el.textContent='No request-specific submission available');
+  }
+  const invoiceText=document.querySelector('#p4 .reviewSubtext');if(invoiceText)invoiceText.textContent='No submitted invoice rows were supplied for this request. Staff may add demonstration rows using Add Invoice.';
+  const docTable=document.querySelector('#p5 .docsReviewTable tbody');if(docTable){docTable.innerHTML='';const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.textContent='No submitted document records supplied for '+id+'.';tr.append(td);docTable.append(tr);}
+  const docWorkspace=document.getElementById('staffDocumentReviewWorkspace');if(docWorkspace){
+   const existing=docWorkspace.querySelector('#v149DocNotice');if(existing)existing.remove();
+   const info=document.createElement('p');info.id='v149DocNotice';info.style.cssText='padding:15px;background:#fff4d8;border:1px solid #d8bd77;border-radius:6px';info.textContent='No document records are supplied for '+id+'. Existing sample document entries below are not associated with this request and should not be reviewed as its documents.';
+   docWorkspace.prepend(info);
+   [...docWorkspace.children].forEach(el=>{if(el!==info)el.style.display='none';});
+  }
+  const activity=document.getElementById('staffActivityLogWorkspace');if(activity){
+   const p=document.createElement('p');p.style.cssText='padding:15px;background:#fff4d8;border:1px solid #d8bd77;border-radius:6px';p.textContent='No recorded activity history supplied for '+id+'.';
+   activity.replaceChildren(p);
+  }
+  // Do not expose another request's prior/related history or supervisor decision as fact.
+  ['priorRequestsPanel','relatedRequestInline','approvalLetterPanel','pendingSupervisorBanner'].forEach(k=>{const e=document.getElementById(k);if(e)e.style.display='none';});
+  const related=document.getElementById('relatedRequestControl');if(related)related.style.display='none';
+  // Existing Action Menu and supervisor approval workflow remain available for prototype interaction.
+  const supervisor=[...wrap.querySelectorAll('.supervisorApprovalPanel')];
+  supervisor.forEach(p=>{const notice=document.createElement('p');notice.style.cssText='padding:10px;background:#fff4d8';notice.textContent='Approval history and status for '+id+' have not been supplied; this is a prototype workflow.';p.prepend(notice);});
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();
 })();
